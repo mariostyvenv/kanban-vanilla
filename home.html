@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/icon-cube.svg">
+    <script src="src/js/libs/tailwindcss.js"></script>
+    <script type="module" src="src/js/app.js"></script>
+    <title>CubeTask</title>
+</head>
+
+<body class="bg-slate-100">
+
+
+    <aside class="h-screen p-4 w-64 fixed">
+        <div class="">
+            <!--Logo-->
+            <div class="flex items-center pt-6">
+                <object data="assets/icon-cube.svg" width="30" height="30"> </object>
+                <p class="text-2xl font-bold pl-2">CubeTask</p>
+            </div>
+            <!--Boards-->
+            <div class="pt-8 pb-2">
+                <div class="flex justify-between items-center font-bold leading-none pb-2">
+                    <p class="text-base">Tableros</p>
+                    <button id="create-board" class="flex items-center  bg-green-300 rounded px-2 hover:bg-green-400">
+                        <i class="text-lg material-icons">add</i>
+                        <p class="text-sm">Crear</p>
+                    </button>
+                </div>
+                <ul id="list-boards">
+                    <li>
+                        <div id="create-board-screen" class="flex hidden pb-2">
+                            <input id="input-add-board" type="text" class="rounded shadow mr-1 w-full p-1">
+                            <button id="save-create-board" class="p-1 mr-1 rounded bg-green-300 hover:bg-green-400">
+                                <i class="text-lg material-icons ">done</i>
+                            </button>
+                            <button id="cancel-create-board" class="p-1 rounded bg-red-300 hover:bg-red-400">
+                                <i class="text-lg material-icons">close</i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--Profile-->
+            <div id="user-profile" class="flex items-center pt-8 justify-between fixed bottom-0 left-0 w-64 p-4 "></div>
+        </div>
+    </aside>
+    <article class="h-screen p-4 pl-64">
+        <div class="h-full rounded-3xl bg-[url('assets/background.svg')] p-4">
+            <div id="dashboard-list" class="hidden">
+                <div class="h-12 w-full bg-slate-100 rounded-xl flex items-center justify-between">
+                    <p id="title-board" class="text-2xl font-bold pl-2">Tablero</p>
+                    <div class="flex pr-2">
+                        <input type="text" class="rounded mr-2 p-1 bg-white" placeholder="Buscar">
+                        <button id="new-list" class="flex items-center bg-green-300 rounded px-2 hover:bg-green-400">
+                            <i class="text-lg material-icons pr-1 font-bold">add</i>
+                            <p class="text-sm font-bold">Nueva lista</p>
+                        </button>
+                        <button id="delete-board" class="flex items-center bg-red-300 rounded px-2 hover:bg-red-400 ml-2">
+                            <i class="text-lg material-icons font-bold">delete</i>
+                        </button>
+                    </div>
+                </div>
+                <div id="cols-kanban" class="flex items-start max-h-96"></div>
+            </div>
+        </div>
+    </article>
+
+    <div id="loading-screen" class="fixed bottom-0 left-0 w-screen h-screen bg-[url('assets/bgligth.svg')]">
+        <div class="flex items-center h-screen w-screen justify-center">
+            <img src="assets/icon-cube.png" class="h-40 animate-spin">
+        </div>
+    </div>
+
+</body>
+
+</html>
