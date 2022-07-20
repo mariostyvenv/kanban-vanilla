@@ -1,4 +1,15 @@
-import { collection, doc, getFirestore, getDocs, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
+import { 
+    collection, 
+    doc, 
+    getFirestore, 
+    getDocs, 
+    onSnapshot,
+    updateDoc,
+    deleteDoc,
+    setDoc, 
+    arrayUnion,
+    arrayRemove
+} from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
 
@@ -16,6 +27,101 @@ class BoardService {
         await setDoc(messageRef, {
             name,
         });
+    }
+
+    async setTask({board, column}, { id = null, title, description }){
+
+        const messageRef = doc(
+            this.db, "users", this.user.uid, 
+            this.nameCollection, board,
+            "columns", column
+        );
+
+        await updateDoc(messageRef, {
+            tasks: arrayUnion({
+                id: id ? id : uuidv4(),
+                title,
+                description
+            }),
+        });
+    }
+
+    async deleteTask({board, column}, { id, title, description }){
+
+        const messageRef = doc(
+            this.db, "users", this.user.uid, 
+            this.nameCollection, board,
+            "columns", column
+        );
+
+        await updateDoc(messageRef, {
+            tasks: arrayRemove({
+                id,
+                title,
+                description
+            }),
+        });
+    }
+
+    async updateTask({board, column, state}, { id, title, description }){
+        
+        const messageRef = doc(
+            this.db, "users", this.user.uid, 
+            this.nameCollection, board,
+            "columns", column
+        );
+
+        const tasksColumn = state.find(item => item.id === column);
+        const tasks = tasksColumn.data.tasks.map((item)=>{
+            if(item.id === id){
+                return {
+                    id,
+                    title,
+                    description
+                }
+            }
+            return item;
+        });
+
+        await updateDoc(messageRef, {
+            tasks: tasks
+        });
+    }
+
+    async updateColumn({board, column}, {name}){
+
+        const messageRef = doc(
+            this.db, "users", this.user.uid, 
+            this.nameCollection, board,
+            "columns", column
+        );
+
+        await updateDoc(messageRef, {
+            name
+        });
+    }
+
+    async updateBoard({board}, {name}){
+        
+        const messageRef = doc(
+            this.db, "users", this.user.uid, 
+            this.nameCollection, board
+        );
+
+        await updateDoc(messageRef, {
+            name
+        });
+    }
+
+    async deleteColumn({board, column}){
+        
+        const messageRef = doc(
+            this.db, "users", this.user.uid, 
+            this.nameCollection, board,
+            "columns", column
+        );
+
+        await deleteDoc(messageRef);
     }
 
     async createColumn({name, columns, column}){

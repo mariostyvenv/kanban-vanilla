@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="assets/icon-cube.svg">
+    <link rel="stylesheet" href="./src/css/home.css">
     <script src="src/js/libs/tailwindcss.js"></script>
     <script type="module" src="src/js/app.js"></script>
     <title>CubeTask</title>
 </head>
 
 <body class="bg-slate-100">
-
 
     <aside class="h-screen p-4 w-64 fixed">
         <div class="">
@@ -51,9 +51,10 @@
     </aside>
     <article class="h-screen p-4 pl-64">
         <div class="h-full rounded-3xl bg-[url('assets/background.svg')] p-4">
-            <div id="dashboard-list" class="hidden">
+            <div id="dashboard-list" class="hidden h-full ">
+                
                 <div class="h-12 w-full bg-slate-100 rounded-xl flex items-center justify-between">
-                    <p id="title-board" class="text-2xl font-bold pl-2">Tablero</p>
+                    <input id="title-board" class="text-2xl font-bold ml-2 pl-2 rounded bg-slate-100">
                     <div class="flex pr-2">
                         <input type="text" class="rounded mr-2 p-1 bg-white" placeholder="Buscar">
                         <button id="new-list" class="flex items-center bg-green-300 rounded px-2 hover:bg-green-400">
@@ -65,7 +66,8 @@
                         </button>
                     </div>
                 </div>
-                <div id="cols-kanban" class="flex items-start max-h-96"></div>
+
+                <div style="height: 95%;" id="cols-kanban" class="flex flex-nowrap items-start  overflow-x-auto"></div>
             </div>
         </div>
     </article>

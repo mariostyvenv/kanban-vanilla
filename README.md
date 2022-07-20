@@ -19,13 +19,13 @@ Most of the code is pure native or vanilla javascript, which does not contain ad
 ## To Do
 
 So far the following features are pending:
-- [ ] Delete selected board.
-- [ ] Delete selected column.
-- [ ] Delete selected card.
-- [ ] Edit name board.
-- [ ] Edit name column.
-- [ ] Edit card selected.
-- [ ] Add card per column.
+- [x] Delete selected board.
+- [x] Delete selected column.
+- [x] Delete selected card.
+- [x] Edit name board.
+- [x] Edit name column.
+- [x] Edit card selected.
+- [x] Add card per column.
 - [ ] Edit horizontal position card.
 - [ ] Share board with other people.
 - [ ] Filter search cards.
