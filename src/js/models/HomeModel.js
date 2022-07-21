@@ -153,31 +153,34 @@ class HomeModel {
                         group: 'shared',
                         animation: 150,
                         direction: 'horizontal',
-                        onChange: async (event) => {
-                            if(this.isDragging) return;
-                            this.isDragging = true;
+                        onUnchoose: async (event) => {
+
                             const taskCol = event.item.dataset.task;
                             const colFrom = event.from.dataset.column;
                             const colTo = event.to.dataset.column;
                             const colSelect = this.columnsState.find(item => item.id === colFrom);
                             const task = colSelect.data.tasks.find(item => item.id === taskCol);
 
+                            if(colFrom === colTo) return;
                             try {
-                                await this.boardSevice.setTask({board:this.homeState.board.id, column:colTo}, {
+                                let allPromises = [];
+
+                                allPromises.push(this.boardSevice.setTask({board:this.homeState.board.id, column:colTo}, {
                                     title:task.title, 
                                     description:task.description
-                                });
-    
-                                await this.boardSevice.deleteTask({board:this.homeState.board.id, column:colFrom}, {
+                                }));
+                                
+                                allPromises.push(this.boardSevice.deleteTask({board:this.homeState.board.id, column:colFrom}, {
                                     id:taskCol,
                                     title: task.title,
                                     description:task.description
-                                });
+                                }));
+
+                                await Promise.all(allPromises);
+ 
                             } catch (error) {
                                 console.log(error)
                             }
-
-                            this.isDragging = false;
                         }
                     });
 
