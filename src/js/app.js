@@ -3,19 +3,8 @@ import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/
 import { firebaseConfig } from "./config/firebase-config.js";
 import { LoginModel } from "./models/LoginModel.js";
 import { HomeModel } from "./models/HomeModel.js";
-import { Sortable } from "./libs/Sortable.js";
 import { homeState } from "./state/homeState.js";
-
-//new Sortable(document.getElementById('col-pendientes'), {
-//	group: 'shared',
-//	animation: 150,
-//    emptyInsertThreshold: 10,
-//    onMove: function (event) {
-//		console.log(event)
-//	},
-//});
  
-
 function main() {
 
     const app = initializeApp(firebaseConfig);

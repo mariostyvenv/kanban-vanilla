@@ -26,6 +26,5 @@ So far the following features are pending:
 - [x] Edit name column.
 - [x] Edit card selected.
 - [x] Add card per column.
-- [ ] Edit horizontal position card.
+- [x] Edit horizontal position card.
 - [ ] Share board with other people.
-- [ ] Filter search cards.

@@ -8,7 +8,10 @@ import {
     deleteDoc,
     setDoc, 
     arrayUnion,
-    arrayRemove
+    arrayRemove,
+    serverTimestamp,
+    query,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js";
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
@@ -25,6 +28,7 @@ class BoardService {
     async create({ name }) {
         const messageRef = doc(this.db, "users", this.user.uid, this.nameCollection, uuidv4());
         await setDoc(messageRef, {
+            timestamp: serverTimestamp(),
             name,
         });
     }
@@ -41,7 +45,7 @@ class BoardService {
             tasks: arrayUnion({
                 id: id ? id : uuidv4(),
                 title,
-                description
+                description,
             }),
         });
     }
@@ -124,6 +128,16 @@ class BoardService {
         await deleteDoc(messageRef);
     }
 
+    async deleteBoard({board}){
+        
+        const messageRef = doc(
+            this.db, "users", this.user.uid, 
+            this.nameCollection, board,
+        );
+
+        await deleteDoc(messageRef);
+    }
+
     async createColumn({name, columns, column}){
         const messageRef = doc(
             this.db, "users", this.user.uid, 
@@ -133,7 +147,8 @@ class BoardService {
 
         await setDoc(messageRef, {
             name,
-            columns
+            columns,
+            timestamp: serverTimestamp(),
         });
     }
 
@@ -167,10 +182,15 @@ class BoardService {
     }
 
     getAllColumns({board, callback}) {
-        this.eventColumns = onSnapshot(collection(
+
+        const collectionCol = collection(
             this.db, 
             `/users/${this.user.uid}/boards/${board}/columns`
-        ), (querySnapshot) => {
+        );
+
+        const q = query(collectionCol, orderBy("timestamp", "asc"))
+
+        this.eventColumns = onSnapshot(q, (querySnapshot) => {
             const data = [];
             querySnapshot.forEach((doc) => {
                 data.push({
