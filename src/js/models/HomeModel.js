@@ -96,7 +96,7 @@ class HomeModel {
                                 </div>
                                 <div id="task-form-${tk.id}" class="hidden w-full bg-white mt-4 rounded-xl p-3 mt-2 drop-shadow-md">
                                     <form class="flex flex-col">
-                                        <input id="title-form-task-${tk.id}" type="text" class="text-base font-bold p-1 bg-white" placeholder="Título..." value="${tk.title}">
+                                        <input id="title-form-task-${tk.id}" type="text" class="text-base font-bold p-1 bg-white mb-1" placeholder="Título..." value="${tk.title}">
                                         <textarea id="desc-form-task-${tk.id}" class="text-sm leading-none p-1" placeholder="Descripción..." rows="3">${tk.description}</textarea>
                                         <div class="flex mt-2">
                                             <button type="button" id="update-task-${tk.id}" data-board="${id}" data-column="${col.id}" data-task="${tk.id}" class="w-full p-1 mr-1 rounded bg-green-300 hover:bg-green-400">
@@ -133,7 +133,7 @@ class HomeModel {
                             ${taskColumns}
                             <div class="hidden w-full bg-white mt-4 rounded-xl p-3 mt-2 drop-shadow-md" id="component-add-task-${col.id}">
                                 <form class="flex flex-col" data-board="${id}" data-column="${col.id}" id="form-add-task-${col.id}">
-                                    <input name="title" type="text" class="text-base font-bold p-1 bg-white" placeholder="Título...">
+                                    <input name="title" type="text" class="text-base font-bold p-1 bg-white mb-1" placeholder="Título...">
                                     <textarea name="description" class="text-sm leading-none p-1" placeholder="Descripción..." rows="2"></textarea>
                                     <div class="flex mt-2">
                                         <button type="submit" class="w-full p-1 mr-1 rounded bg-green-300 hover:bg-green-400">
@@ -153,6 +153,7 @@ class HomeModel {
                         group: 'shared',
                         animation: 150,
                         direction: 'horizontal',
+                        ghostClass:"ghost",
                         onUnchoose: async (event) => {
 
                             const taskCol = event.item.dataset.task;
@@ -199,22 +200,27 @@ class HomeModel {
                                 document.getElementById(`task-form-${task}`).classList.toggle("hidden");
                             });
 
-                            document.getElementById(`delete-task-${tk.id}`).addEventListener("click", (event) => {
+                            document.getElementById(`delete-task-${tk.id}`).addEventListener("click", async (event) => {
                                 const board = event.currentTarget.dataset.board;
                                 const column = event.currentTarget.dataset.column;
                                 const task = event.currentTarget.dataset.task;
                                 const title = document.getElementById(`title-form-task-${task}`).value;
                                 const description = document.getElementById(`desc-form-task-${task}`).value;
+                                document.getElementById(`task-${task}`).classList.toggle("hidden");
+                                document.getElementById(`task-form-${task}`).classList.toggle("hidden");
                                 this.boardSevice.deleteTask({ board, column }, { id: task, title, description });
                             });
 
-                            document.getElementById(`update-task-${tk.id}`).addEventListener("click", (event) => {
+                            document.getElementById(`update-task-${tk.id}`).addEventListener("click", async (event) => {
                                 const board = this.homeState.board.id;
                                 const column = event.currentTarget.dataset.column;
                                 const task = event.currentTarget.dataset.task;
                                 const title = document.getElementById(`title-form-task-${task}`).value;
                                 const description = document.getElementById(`desc-form-task-${task}`).value;
-                                this.boardSevice.updateTask({ board, column, state: this.columnsState }, { id: task, title, description });
+                                document.getElementById(`task-${task}`).classList.toggle("hidden");
+                                document.getElementById(`task-form-${task}`).classList.toggle("hidden");
+                                await this.boardSevice.updateTask({ board, column, state: this.columnsState }, { id: task, title, description });
+
                             });
                         }
                     }
@@ -225,17 +231,18 @@ class HomeModel {
                     const eventInputColumn = document.getElementById(`column-title-${col.id}`);
                     const eventDeleteColumn = document.getElementById(`button-delete-column-${col.id}`);
 
-                    eventForm.addEventListener("submit", (event) => {
+                    eventForm.addEventListener("submit", async (event) => {
                         event.preventDefault();
                         const board = event.currentTarget.dataset.board;
                         const column = event.currentTarget.dataset.column;
                         const title = event.target[0].value;
                         const description = event.target[1].value;
-
-                        this.boardSevice.setTask({ board, column }, {
+                        document.getElementById(`component-add-task-${column}`).classList.toggle("hidden");
+                        await this.boardSevice.setTask({ board, column }, {
                             title,
                             description
                         });
+                        
                     });
 
                     eventButtonAdd.addEventListener("click", (event) => {

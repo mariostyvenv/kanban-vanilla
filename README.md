@@ -28,4 +28,3 @@ So far the following features are pending:
 - [x] Edit card selected.
 - [x] Add card per column.
 - [x] Edit horizontal position card.
-- [ ] Share board with other people.
